@@ -13,7 +13,7 @@
     </Window.DataContext>
 
     <Grid x:Name="MainGrid">
-        <TextBlock Text="(c) Lukáš Bubník 2018"/>
+        <TextBlock Text="(c) Lukáš Bubník 2018" Margin="5,2"/>
         <Grid ShowGridLines="False" HorizontalAlignment="Center" VerticalAlignment="Center">
             <!--#region Resources-->
             <Grid.Resources>
