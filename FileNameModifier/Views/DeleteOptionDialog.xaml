@@ -7,7 +7,7 @@
         xmlns:strings="clr-namespace:FileNameModifier.Logic.Constants"
         xmlns:viewModels="clr-namespace:FileNameModifier.ViewModels"
         mc:Ignorable="d"
-        Title="Deletion options" Height="124.894" Width="512.076" ResizeMode="CanMinimize" 
+        Title="Deletion options" Height="129.172" Width="488.076" ResizeMode="CanMinimize" 
         Closing="DeleteOptionDialog_OnClosing" WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>

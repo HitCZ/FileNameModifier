@@ -44,39 +44,29 @@ namespace FileNameModifier.ViewModels
 
             currentTextToCut = textToCut;
 
-            var directoryInfo = new DirectoryInfo(selectedPath);
-
-            if (!directoryInfo.Exists)
-            {
-                MessageBox.Show($"The path \"{selectedPath}\" could not be found.");
-                return;
-            }
-
-            var fileInfo = directoryInfo.GetFiles();
-
             try
             {
                 var counter = 0;
                 var dialogConfirmed = false;
                 var dialogShown = false;
+                var fileInfos = TryGetDirectoryFiles();
 
-                foreach (var info in fileInfo)
+                foreach (var info in fileInfos)
                 {
+                    var numberOfOccurrences = Regex.Matches(info.FullName, textToCut).Count;
+                    currentFile = info;
+
+                    if (fileInfos.Length == 1 && numberOfOccurrences == 0)
+                    {
+                        ShowNoOccurrencesDialog(info, textToCut);
+                        return;
+                    }
                     if (!info.FullName.ToLower().Contains(textToCut.ToLower()))
                         continue;
-                    var numberOfOccurences = Regex.Matches(info.FullName, textToCut).Count;
-                    this.currentFile = info;
-
-                    if (numberOfOccurences > 1)
+                    if (numberOfOccurrences > 1)
                     {
-                        var deletionDialog = new DeleteOptionDialog();
-
-                        deletionDialog.BeforeClosing += DeletionDialog_BeforeClosing;
-                        var result = deletionDialog.ShowDialog();
+                        dialogConfirmed = ShowDeletionOptionDialog();
                         dialogShown = true;
-
-                        if (!(result is null))
-                            dialogConfirmed = !(bool)result;
                     }
 
                     if (!dialogShown)
@@ -86,16 +76,73 @@ namespace FileNameModifier.ViewModels
 
                 if ((!dialogShown || !dialogConfirmed) && dialogShown)
                     return;
-                var unchangedFilesCount = fileInfo.Length - counter;
 
-                MessageBox.Show($"Operation was successful.\nNumber of changed files: {counter}." +
-                                $"\nNumber of unchanged files: {unchangedFilesCount}.");
+                var unchangedFilesCount = fileInfos.Length - counter;
+                ShowSuccessDialog(counter, unchangedFilesCount);
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Operation wasn't successful.\n{e.Message}");
+                ShowFailDialog(e.Message);
             }
         }
+
+        private FileInfo[] TryGetDirectoryFiles()
+        {
+            var directoryInfo = new DirectoryInfo(selectedPath);
+            if (!directoryInfo.Exists)
+            {
+                ShowFileNotFoundDialog();
+                return null;
+            }
+
+            var fileInfos = directoryInfo.GetFiles();
+
+            return fileInfos;
+        }
+
+        #endregion Public Methods
+
+        #region Dialogs
+
+        private bool ShowDeletionOptionDialog()
+        {
+            var deletionDialog = new DeleteOptionDialog();
+
+            deletionDialog.BeforeClosing += DeletionDialog_BeforeClosing;
+            deletionDialog.ShowDialog();
+
+            return deletionDialog.IsConfirmed;
+        }
+
+        private void ShowSuccessDialog(int changedCount, int unchangedCount)
+        {
+            MessageBox.Show($"Operation was successful.\nNumber of changed files: {changedCount}." +
+                            $"\nNumber of unchanged files: {unchangedCount}.", "Success", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        private void ShowFailDialog(string errorMessage)
+        {
+            MessageBox.Show($"Operation wasn't successful.\n\nError message: {errorMessage}", "Error", 
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void ShowFileNotFoundDialog()
+        {
+            MessageBox.Show($"The path \"{selectedPath}\" could not be found.", "File not found", 
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void ShowNoOccurrencesDialog(FileInfo fileInfo, string textToCut)
+        {
+            MessageBox.Show(
+                $"There were no occurrences of \"{textToCut}\" found in the filename \"{fileInfo.FullName}\".", 
+                "No occurrence", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        #endregion Dialogs
+
+        #region Event Handlers
 
         private void DeletionDialog_BeforeClosing(object sender, OptionClosingArgument e)
         {
@@ -114,7 +161,7 @@ namespace FileNameModifier.ViewModels
             }
         }
 
-        #endregion Public Methods
+        #endregion Event Handlers
 
         #region INotifyPropertyChanged
 

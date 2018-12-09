@@ -27,6 +27,8 @@ namespace FileNameModifier.Views
 
         public event BeforeClosingEventHandler BeforeClosing;
 
+        public bool IsConfirmed { get; set; }
+
         public DeleteOptionDialog()
         {
             InitializeComponent();
@@ -34,6 +36,7 @@ namespace FileNameModifier.Views
 
         private void ButtonConfirm_OnClick(object sender, RoutedEventArgs e)
         {
+            IsConfirmed = true;
             ViewModel.IsConfirmed = true;
             Close();
         }
