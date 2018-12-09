@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using FileNameModifier.Annotations;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using FileNameModifier.Logic.FileModification;
 
 namespace FileNameModifier.ViewModels
 {
@@ -21,7 +20,7 @@ namespace FileNameModifier.ViewModels
 
         public string SelectedPath
         {
-            get => selectedPath ;
+            get => selectedPath;
             set
             {
                 selectedPath = value;
@@ -31,6 +30,44 @@ namespace FileNameModifier.ViewModels
 
         #endregion Properties
 
+        #region Public Methods
+
+        public void CutText(string textToCut)
+        {
+            if (selectedPath == string.Empty)
+                return;
+
+            var directoryInfo = new DirectoryInfo(selectedPath);
+            var fileInfo = directoryInfo.GetFiles();
+
+            try
+            {
+                var counter = 0;
+
+                foreach (var info in fileInfo)
+                {
+                    if (!info.FullName.ToLower().Contains(textToCut.ToLower()))
+                        continue;
+
+                    FileNameCutter.CutSubstringFromFileName(info, textToCut);
+                    counter++;
+                }
+
+                var unchangedFilesCount = fileInfo.Length - counter;
+
+                MessageBox.Show($"Operation was successful.\nNumber of changed files: {counter}." +
+                                $"\nNumber of unchanged files: {unchangedFilesCount}.");
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Operation wasn't successful.\n{e.Message}");
+            }
+        }
+
+        #endregion Public Methods
+
+        #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -38,5 +75,8 @@ namespace FileNameModifier.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion INotifyPropertyChanged
+
     }
 }

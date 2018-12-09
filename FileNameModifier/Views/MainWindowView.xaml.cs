@@ -1,7 +1,5 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
-using FileNameModifier.ViewModels;
 
 namespace FileNameModifier.Views
 {
@@ -10,7 +8,6 @@ namespace FileNameModifier.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
@@ -29,15 +26,18 @@ namespace FileNameModifier.Views
                     string.IsNullOrWhiteSpace(selectedPath)) return;
 
                 ViewModel.SelectedPath = selectedPath;
-                var files = Directory.GetFiles(selectedPath);
             }
-
         }
 
         private void ButtonConfirm_OnClick(object sender, RoutedEventArgs e)
         {
+            if (!(sender is System.Windows.Controls.Button))
+                return;
 
+            var textToCut = TextBoxCut?.Text;
 
+            if (!(textToCut is null) && (textToCut != string.Empty))
+                ViewModel.CutText(textToCut);
         }
 
         #endregion Event Handlers

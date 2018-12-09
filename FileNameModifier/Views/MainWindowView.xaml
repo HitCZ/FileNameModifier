@@ -6,7 +6,7 @@
         xmlns:converters="clr-namespace:FileNameModifier.Logic.Converters"
         xmlns:local="clr-namespace:FileNameModifier.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="CanMinimize">
+        Title="Filename Modifier" Height="139" Width="522" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
         <local:MainWindowViewModel x:Name="ViewModel" />
