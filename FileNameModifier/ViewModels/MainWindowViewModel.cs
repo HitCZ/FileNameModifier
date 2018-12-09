@@ -116,8 +116,10 @@ namespace FileNameModifier.ViewModels
 
         private void ShowSuccessDialog(int changedCount, int unchangedCount)
         {
+            var strUnchangedCount = unchangedCount == 0 ? "None" : unchangedCount.ToString();
+
             MessageBox.Show($"Operation was successful.\nNumber of changed files: {changedCount}." +
-                            $"\nNumber of unchanged files: {unchangedCount}.", "Success", MessageBoxButton.OK,
+                            $"\nNumber of unchanged files: {strUnchangedCount}.", "Success", MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
 
