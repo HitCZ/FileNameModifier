@@ -12,46 +12,49 @@
         <local:MainWindowViewModel x:Name="ViewModel" />
     </Window.DataContext>
 
-    <Grid ShowGridLines="False" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <!--#region Resources-->
-        <Grid.Resources>
-            <!--#region Constants-->
-            <converters:TextInputToVisibilityConverter x:Key="TextInputToVisibilityConverter"/>
-            <Thickness x:Key="MarginButton" Left="10"/>
-            <!--#endregion Constants-->
-        </Grid.Resources>
-        <!--#endregion Resources-->
+    <Grid x:Name="MainGrid">
+        <TextBlock Text="(c) Lukáš Bubník 2018"/>
+        <Grid ShowGridLines="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!--#region Resources-->
+            <Grid.Resources>
+                <!--#region Constants-->
+                <converters:TextInputToVisibilityConverter x:Key="TextInputToVisibilityConverter"/>
+                <Thickness x:Key="MarginButton" Left="10"/>
+                <!--#endregion Constants-->
+            </Grid.Resources>
+            <!--#endregion Resources-->
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Directory path" Grid.Column="0" Grid.Row="0" Margin="5,2" FontStyle="Italic"
+            <TextBlock Text="Directory path" Grid.Column="0" Grid.Row="0" Margin="5,2" FontStyle="Italic"
                    FontWeight="Light">
-            <TextBlock.Visibility>
-                <MultiBinding Converter="{StaticResource TextInputToVisibilityConverter}">
-                    <Binding ElementName="TextBoxFilePath" Path="Text.Length"/>
-                    <Binding ElementName="TextBoxFilePath" Path="IsFocused"/>
-                </MultiBinding>
-            </TextBlock.Visibility>
-        </TextBlock>
+                <TextBlock.Visibility>
+                    <MultiBinding Converter="{StaticResource TextInputToVisibilityConverter}">
+                        <Binding ElementName="TextBoxFilePath" Path="Text.Length"/>
+                        <Binding ElementName="TextBoxFilePath" Path="IsFocused"/>
+                    </MultiBinding>
+                </TextBlock.Visibility>
+            </TextBlock>
 
-        <TextBox x:Name="TextBoxFilePath" Grid.Column="0" Grid.Row="0" MinWidth="400" Visibility="Visible" 
+            <TextBox x:Name="TextBoxFilePath" Grid.Column="0" Grid.Row="0" MinWidth="400" Visibility="Visible" 
                  Background="Transparent" Text="{Binding SelectedPath, Mode=TwoWay}"/>
-        <Button x:Name="ButtonBrowseFile" Grid.Column="1" Grid.Row="0" Content="Browse" MinWidth="50" 
+            <Button x:Name="ButtonBrowseFile" Grid.Column="1" Grid.Row="0" Content="Browse" MinWidth="50" 
                 Margin="{StaticResource MarginButton}" Click="ButtonBrowseFile_OnClick"/>
 
 
-        <TextBlock Text="Text to cut: " Grid.Row="1" Grid.Column="0" Width="100" HorizontalAlignment="Left"
+            <TextBlock Text="Text to cut: " Grid.Row="1" Grid.Column="0" Width="100" HorizontalAlignment="Left"
                    Margin="0,5,0,0"/>
-        <TextBox x:Name="TextBoxCut" Grid.Row="1" Grid.Column="0" MinWidth="200" Margin="70,5,0,0"/>
-        <Button x:Name="ButtonConfirm" Grid.Row="1" Grid.Column="1" Content="Confirm"
+            <TextBox x:Name="TextBoxCut" Grid.Row="1" Grid.Column="0" MinWidth="200" Margin="70,5,0,0"/>
+            <Button x:Name="ButtonConfirm" Grid.Row="1" Grid.Column="1" Content="Confirm"
                 Margin="{StaticResource MarginButton}" Click="ButtonConfirm_OnClick"/>
+        </Grid>
     </Grid>
 </Window>
