@@ -74,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\DeleteOptionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,10 +86,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logic\Arguments\OptionClosingArgument.cs" />
+    <Compile Include="Logic\Constants\Strings.cs" />
+    <Compile Include="Logic\Converters\OptionToCheckedConverter.cs" />
     <Compile Include="Logic\Converters\TextInputToVisibilityConverter.cs" />
+    <Compile Include="Logic\Enumerations\DeletionOption.cs" />
     <Compile Include="Logic\FileModification\FileNameCutter.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\DeletionOptionDialogViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\DeleteOptionDialog.xaml.cs">
+      <DependentUpon>DeleteOptionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
