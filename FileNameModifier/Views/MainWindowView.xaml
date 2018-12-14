@@ -50,7 +50,8 @@
             <TextBox x:Name="TextBoxFilePath" Grid.Column="0" Grid.Row="0" MinWidth="400" Visibility="Visible" 
                  Background="Transparent" Text="{Binding SelectedPath, Mode=TwoWay}"/>
             <Button x:Name="ButtonBrowseFile" Grid.Column="1" Grid.Row="0" Content="Browse" MinWidth="50" 
-                Margin="{StaticResource MarginButton}" Click="ButtonBrowseFile_OnClick"/>
+                Margin="{StaticResource MarginButton}" Click="ButtonBrowseFile_OnClick" 
+                    Typography.Capitals="AllSmallCaps"/>
 
 
             <TextBlock Text="Text to cut: " Grid.Row="1" Grid.Column="0" Width="100" HorizontalAlignment="Left"
@@ -58,10 +59,10 @@
             <TextBox x:Name="TextBoxCut" Grid.Row="1" Grid.Column="0" MinWidth="200" 
                      Margin="{StaticResource TextBoxMargin}"/>
             <Button x:Name="ButtonConfirm" Grid.Row="1" Grid.Column="1" Content="Confirm"
-                Margin="10,5,0,0" Click="ButtonConfirm_OnClick"/>
+                Margin="10,5,0,0" Click="ButtonConfirm_OnClick" Typography.Capitals="AllSmallCaps"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Processing file: " Margin="0,2,0,0"/>
             <TextBlock x:Name="TextBlockProcessingFileName" Grid.Row="2" Grid.Column="0" 
-                       Text="{Binding CurrentFile.FullName}" Margin="90,2,0,0"/>
+                       Text="{Binding CurrentFile.FullName}" Margin="90,2,0,0" />
         </Grid>
     </Grid>
 </Window>
