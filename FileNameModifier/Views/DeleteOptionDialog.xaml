@@ -3,16 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:FileNameModifier.Logic.Converters"
         xmlns:strings="clr-namespace:FileNameModifier.Logic.Constants"
-        xmlns:viewModels="clr-namespace:FileNameModifier.ViewModels"
+        xmlns:converters="clr-namespace:FileNameModifier.Logic.Converters"
         mc:Ignorable="d"
-        Title="Deletion options" Height="129.172" Width="501.147" ResizeMode="CanMinimize" 
+        Title="Deletion options" Height="125.33" Width="501.147" ResizeMode="CanMinimize" 
         Closing="DeleteOptionDialog_OnClosing" WindowStartupLocation="CenterScreen">
 
-    <Window.DataContext>
-        <viewModels:DeletionOptionDialogViewModel x:Name="ViewModel"/>
-    </Window.DataContext>
     <Grid Margin="10,2">
 
         <Grid.Resources>
@@ -25,19 +21,30 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Multiple occurrences of the given text have been found. How do you wish to proceed?" 
-                   Grid.Row="0"/>
-        <RadioButton x:Name="RadioButtonRemoveFirst" GroupName="DeletionOptions" Grid.Row="1" 
-                     Content="{x:Static strings:Strings.CaptionOptionRemoveFirst}" Margin="{StaticResource RadioButtonMargin}"
-                     Checked="RadioButtonRemoveFirst_OnChecked" IsChecked="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-        </RadioButton>
-        <RadioButton x:Name="RadioButtonRemoveAll" GroupName="DeletionOptions" Grid.Row="2" 
-                     Content="{x:Static strings:Strings.CaptionOptionRemoveAllOccurrences}" Margin="10,0,0,0" Checked="RadioButtonRemoveAll_OnChecked">
-        </RadioButton>
-        <Button x:Name="ButtonConfirm" Click="ButtonConfirm_OnClick" Grid.Row="3" MinWidth="50" MinHeight="20" 
-                VerticalAlignment="Center" HorizontalAlignment="Center" Content="Confirm" Margin="0,10,0,0"/>
+        <TextBlock Text="Multiple occurrences of the given text have been found. How do you wish to proceed?" 
+                   Grid.Row="0" Grid.ColumnSpan="2"/>
+        <RadioButton x:Name="RadioButtonRemoveFirst" GroupName="DeletionOptions" Grid.Row="1" Grid.Column="0"
+                     Content="{x:Static strings:Strings.CaptionOptionRemoveFirst}" 
+                     Margin="{StaticResource RadioButtonMargin}"
+                     Checked="RadioButtonRemoveFirst_OnChecked" IsChecked="True"/>
+        <RadioButton x:Name="RadioButtonRemoveAll" GroupName="DeletionOptions" Grid.Row="2" Grid.Column="0"
+                     Content="{x:Static strings:Strings.CaptionOptionRemoveAllOccurrences}" Margin="10,0,0,0" 
+                     Checked="RadioButtonRemoveAll_OnChecked"/>
+        <!--<TextBlock Grid.Row="3" Grid.Column="0" Text="Remove specific occurrence: " Margin="10,5,0,0"/>
+        <ComboBox Grid.Row="3" Grid.Column="0" Margin="0,5,100,0" VerticalAlignment="Top" 
+                  HorizontalAlignment="Right" IsEditable="True" MinWidth="50"
+                  Height="auto" ItemsSource="{Binding OccurenceCounts}" SelectedIndex="1" />-->
+
+        <Button x:Name="ButtonConfirm" Click="ButtonConfirm_OnClick" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                MinWidth="50" MinHeight="20" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Confirm" 
+                Typography.Capitals="AllSmallCaps"  Margin="0,10,0,0"/>
     </Grid>
 </Window>

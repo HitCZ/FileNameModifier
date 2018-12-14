@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FileNameModifier.Annotations;
 using System.ComponentModel;
 using System.IO;
@@ -33,6 +34,16 @@ namespace FileNameModifier.ViewModels
             }
         }
 
+        public FileInfo CurrentFile
+        {
+            get => currentFile;
+            set
+            {
+                currentFile = value;
+                OnPropertyChanged(nameof(CurrentFile));
+            }
+        }
+
         #endregion Properties
 
         #region Public Methods
@@ -54,18 +65,17 @@ namespace FileNameModifier.ViewModels
                 foreach (var info in fileInfos)
                 {
                     var numberOfOccurrences = Regex.Matches(info.FullName, textToCut).Count;
-                    currentFile = info;
+                    CurrentFile = info;
 
                     if (fileInfos.Length == 1 && numberOfOccurrences == 0)
                     {
                         ShowNoOccurrencesDialog(info, textToCut);
                         return;
                     }
-                    if (!info.FullName.ToLower().Contains(textToCut.ToLower()))
-                        continue;
                     if (numberOfOccurrences > 1)
                     {
-                        dialogConfirmed = ShowDeletionOptionDialog();
+                        var occurenceCountList = GetOccurenceCountList(numberOfOccurrences);
+                        dialogConfirmed = ShowDeletionOptionDialog(occurenceCountList);
                         dialogShown = true;
                     }
 
@@ -86,6 +96,16 @@ namespace FileNameModifier.ViewModels
             }
         }
 
+        private List<int> GetOccurenceCountList(int numberOfOccurrences)
+        {
+            var list = new List<int>(numberOfOccurrences);
+
+            for (var i = 1; i <= numberOfOccurrences; i++)
+                list.Add(i);
+
+            return list;
+        }
+
         private FileInfo[] TryGetDirectoryFiles()
         {
             var directoryInfo = new DirectoryInfo(selectedPath);
@@ -94,7 +114,6 @@ namespace FileNameModifier.ViewModels
                 ShowFileNotFoundDialog();
                 return null;
             }
-
             var fileInfos = directoryInfo.GetFiles();
 
             return fileInfos;
@@ -104,9 +123,9 @@ namespace FileNameModifier.ViewModels
 
         #region Dialogs
 
-        private bool ShowDeletionOptionDialog()
+        private bool ShowDeletionOptionDialog(List<int> occurenceCounts)
         {
-            var deletionDialog = new DeleteOptionDialog();
+            var deletionDialog = new DeleteOptionDialog(occurenceCounts);
 
             deletionDialog.BeforeClosing += DeletionDialog_BeforeClosing;
             deletionDialog.ShowDialog();
@@ -153,10 +172,10 @@ namespace FileNameModifier.ViewModels
             switch (e.SelectedOption)
             {
                 case Logic.Enumerations.DeletionOption.RemoveFirst:
-                    FileNameCutter.CutFirstOccurrence(currentFile, currentTextToCut);
+                    FileNameCutter.CutFirstOccurrence(CurrentFile, currentTextToCut);
                     break;
                 case Logic.Enumerations.DeletionOption.RemoveAll:
-                    FileNameCutter.CutAllOccurrences(currentFile, currentTextToCut);
+                    FileNameCutter.CutAllOccurrences(CurrentFile, currentTextToCut);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

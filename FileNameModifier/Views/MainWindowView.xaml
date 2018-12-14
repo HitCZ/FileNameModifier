@@ -13,18 +13,20 @@
     </Window.DataContext>
 
     <Grid x:Name="MainGrid">
-        <TextBlock Text="(c) Lukáš Bubník 2018" Margin="5,2"/>
+        <TextBlock Text="(c) Lukáš Bubník 2018" Margin="5,2" FontStyle="Italic" FontSize="10"/>
         <Grid ShowGridLines="False" HorizontalAlignment="Center" VerticalAlignment="Center">
             <!--#region Resources-->
             <Grid.Resources>
                 <!--#region Constants-->
                 <converters:TextInputToVisibilityConverter x:Key="TextInputToVisibilityConverter"/>
                 <Thickness x:Key="MarginButton" Left="10"/>
+                <Thickness x:Key="TextBoxMargin" Left="90" Top="5"/>
                 <!--#endregion Constants-->
             </Grid.Resources>
             <!--#endregion Resources-->
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -33,6 +35,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+
 
             <TextBlock Text="Directory path" Grid.Column="0" Grid.Row="0" Margin="5,2" FontStyle="Italic"
                    FontWeight="Light">
@@ -52,9 +55,13 @@
 
             <TextBlock Text="Text to cut: " Grid.Row="1" Grid.Column="0" Width="100" HorizontalAlignment="Left"
                    Margin="0,5,0,0"/>
-            <TextBox x:Name="TextBoxCut" Grid.Row="1" Grid.Column="0" MinWidth="200" Margin="70,5,0,0"/>
+            <TextBox x:Name="TextBoxCut" Grid.Row="1" Grid.Column="0" MinWidth="200" 
+                     Margin="{StaticResource TextBoxMargin}"/>
             <Button x:Name="ButtonConfirm" Grid.Row="1" Grid.Column="1" Content="Confirm"
-                Margin="{StaticResource MarginButton}" Click="ButtonConfirm_OnClick"/>
+                Margin="10,5,0,0" Click="ButtonConfirm_OnClick"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Processing file: " Margin="0,2,0,0"/>
+            <TextBlock x:Name="TextBlockProcessingFileName" Grid.Row="2" Grid.Column="0" 
+                       Text="{Binding CurrentFile.FullName}" Margin="90,2,0,0"/>
         </Grid>
     </Grid>
 </Window>

@@ -1,14 +1,22 @@
-﻿using FileNameModifier.Annotations;
+﻿using System.Collections.Generic;
+using FileNameModifier.Annotations;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using FileNameModifier.Logic.Enumerations;
 
 namespace FileNameModifier.ViewModels
 {
-    class DeletionOptionDialogViewModel :INotifyPropertyChanged
+    public class DeletionOptionDialogViewModel : INotifyPropertyChanged
     {
+        #region Fields
+
         private bool isConfirmed;
         private DeletionOption selectedOption;
+        private List<int> occurenceCounts;
+
+        #endregion Fields
+
+        #region Properties
 
         public bool IsConfirmed
         {
@@ -30,10 +38,29 @@ namespace FileNameModifier.ViewModels
             }
         }
 
-        public DeletionOptionDialogViewModel()
+        public List<int> OccurenceCounts
         {
+            get => occurenceCounts;
+            set
+            {
+                occurenceCounts = value;
+                OnPropertyChanged(nameof(OccurenceCounts));
+            }
+        }
+
+        #endregion Properties
+
+        #region Constructor
+
+        public DeletionOptionDialogViewModel(List<int> occurenceCounts)
+        {
+            OccurenceCounts = occurenceCounts;
             SelectedOption = DeletionOption.RemoveFirst;
         }
+
+        #endregion Constructor
+
+        #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -43,5 +70,7 @@ namespace FileNameModifier.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         }
+
+        #endregion INotifyPropertyChanged
     }
 }
