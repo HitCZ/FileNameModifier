@@ -52,7 +52,7 @@ namespace FileNameModifier.Views
 
         private void ButtonConfirm_OnClick(object sender, RoutedEventArgs e)
         {
-            IsConfirmed = true;
+            IsConfirmed           = true;
             ViewModel.IsConfirmed = true;
             Close();
         }
@@ -61,7 +61,7 @@ namespace FileNameModifier.Views
         {
             var optionClosingArgs = new OptionClosingArgument()
             {
-                IsConfirmed = ViewModel.IsConfirmed,
+                IsConfirmed    = ViewModel.IsConfirmed,
                 SelectedOption = ViewModel.SelectedOption
             };
 

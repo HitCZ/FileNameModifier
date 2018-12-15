@@ -16,9 +16,9 @@ namespace FileNameModifier.ViewModels
     {
         #region Fields
 
-        private string selectedPath = string.Empty;
-        private FileInfo currentFile;
+        private string selectedPath     = string.Empty;
         private string currentTextToCut = string.Empty;
+        private FileInfo currentFile;
 
         #endregion Fields
 
@@ -43,7 +43,7 @@ namespace FileNameModifier.ViewModels
                 OnPropertyChanged(nameof(CurrentFile));
             }
         }
-
+         
         #endregion Properties
 
         #region Public Methods
@@ -57,15 +57,15 @@ namespace FileNameModifier.ViewModels
 
             try
             {
-                var counter = 0;
+                var counter         = 0;
                 var dialogConfirmed = false;
-                var dialogShown = false;
-                var fileInfos = TryGetDirectoryFiles();
+                var dialogShown     = false;
+                var fileInfos       = TryGetDirectoryFiles();
 
                 foreach (var info in fileInfos)
                 {
                     var numberOfOccurrences = Regex.Matches(info.FullName, textToCut).Count;
-                    CurrentFile = info;
+                    CurrentFile             = info;
 
                     if (fileInfos.Length == 1 && numberOfOccurrences == 0)
                     {
@@ -75,8 +75,8 @@ namespace FileNameModifier.ViewModels
                     if (numberOfOccurrences > 1)
                     {
                         var occurenceCountList = GetOccurenceCountList(numberOfOccurrences);
-                        dialogConfirmed = ShowDeletionOptionDialog(occurenceCountList);
-                        dialogShown = true;
+                        dialogConfirmed        = ShowDeletionOptionDialog(occurenceCountList);
+                        dialogShown            = true;
                     }
 
                     if (!dialogShown)
