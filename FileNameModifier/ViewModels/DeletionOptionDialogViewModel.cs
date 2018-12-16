@@ -11,8 +11,10 @@ namespace FileNameModifier.ViewModels
         #region Fields
 
         private bool isConfirmed;
+        private bool isAllFilesChecked;
+        private int selectedOccurrence;
         private DeletionOption selectedOption;
-        private List<int> occurenceCounts;
+        private List<int> occurrenceCounts;
 
         #endregion Fields
 
@@ -38,13 +40,33 @@ namespace FileNameModifier.ViewModels
             }
         }
 
-        public List<int> OccurenceCounts
+        public int SelectedOccurrence
         {
-            get => occurenceCounts;
+            get => selectedOccurrence;
             set
             {
-                occurenceCounts = value;
-                OnPropertyChanged(nameof(OccurenceCounts));
+                selectedOccurrence = value;
+                OnPropertyChanged(nameof(SelectedOccurrence));
+            }
+        }
+
+        public List<int> OccurrenceCounts
+        {
+            get => occurrenceCounts;
+            set
+            {
+                occurrenceCounts = value;
+                OnPropertyChanged(nameof(OccurrenceCounts));
+            }
+        }
+
+        public bool IsAllFilesChecked
+        {
+            get => isAllFilesChecked;
+            set
+            {
+                isAllFilesChecked = value;
+                OnPropertyChanged(nameof(IsAllFilesChecked));
             }
         }
 
@@ -52,10 +74,18 @@ namespace FileNameModifier.ViewModels
 
         #region Constructor
 
-        public DeletionOptionDialogViewModel(List<int> occurenceCounts)
+        public DeletionOptionDialogViewModel(List<int> occurrenceCounts)
         {
-            OccurenceCounts = occurenceCounts;
+            OccurrenceCounts = occurrenceCounts;
             SelectedOption = DeletionOption.RemoveFirst;
+            IsAllFilesChecked = false;
+
+            if (occurrenceCounts.Count > 1)
+                selectedOccurrence = 2;
+            else if (occurrenceCounts.Count == 0)
+                selectedOccurrence = 1;
+            else
+                selectedOccurrence = 0;
         }
 
         #endregion Constructor

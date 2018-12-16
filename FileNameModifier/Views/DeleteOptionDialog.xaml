@@ -4,18 +4,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:strings="clr-namespace:FileNameModifier.Logic.Constants"
-        xmlns:converters="clr-namespace:FileNameModifier.Logic.Converters"
         mc:Ignorable="d"
-        Title="Deletion options" Height="125.33" Width="501.147" ResizeMode="CanMinimize" 
+        Title="Deletion options" Height="142.33" Width="501.147" ResizeMode="CanMinimize" 
         Closing="DeleteOptionDialog_OnClosing" WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10,2">
 
         <Grid.Resources>
             <Thickness x:Key="RadioButtonMargin" Left="10" Top="5"/>
-            <converters:OptionToCheckedConverter x:Key="OptionToCheckedConverter"/>
         </Grid.Resources>
 
+        <!--#region Definitions-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -28,6 +27,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <!--#endregion Definitions-->
 
         <TextBlock Text="Multiple occurrences of the given text have been found. How do you wish to proceed?" 
                    Grid.Row="0" Grid.ColumnSpan="2"/>
@@ -38,10 +38,17 @@
         <RadioButton x:Name="RadioButtonRemoveAll" GroupName="DeletionOptions" Grid.Row="2" Grid.Column="0"
                      Content="{x:Static strings:Strings.CaptionOptionRemoveAllOccurrences}" Margin="10,0,0,0" 
                      Checked="RadioButtonRemoveAll_OnChecked"/>
-        <!--<TextBlock Grid.Row="3" Grid.Column="0" Text="Remove specific occurrence: " Margin="10,5,0,0"/>
-        <ComboBox Grid.Row="3" Grid.Column="0" Margin="0,5,100,0" VerticalAlignment="Top" 
-                  HorizontalAlignment="Right" IsEditable="True" MinWidth="50"
-                  Height="auto" ItemsSource="{Binding OccurenceCounts}" SelectedIndex="1" />-->
+        <!--<RadioButton x:Name="RadioButtonRemoveSpecificOccurrence" GroupName="DeletionOptions" Grid.Row="3"
+                     Grid.Column="0" Content="{x:Static strings:Strings.CaptionRemoveSpecificOccurrence}" 
+                     Margin="10,0,0,0" Checked="RadioButtonRemoveSpecificOccurrence_OnChecked"/>
+        <ComboBox Grid.Row="3" Grid.Column="0" Margin="0,0,50,0" VerticalAlignment="Center" 
+                  HorizontalAlignment="Right" IsEditable="False" MinWidth="50" HorizontalContentAlignment="Center"
+                  Padding="0,-2,0,0" ItemsSource="{Binding OccurrenceCounts}" SelectedIndex="1"
+                  SelectedValue="{Binding SelectedOccurrence}"
+                  IsEnabled="{Binding ElementName=RadioButtonRemoveSpecificOccurrence, Path=IsChecked}"/>
+        <CheckBox x:Name="CheckBoxAllFiles" Grid.Row="3" Grid.Column="1" Content="All files" 
+                  HorizontalAlignment="Right" IsChecked="{Binding IsAllFilesChecked}" 
+                  Checked="CheckBoxAllFiles_OnChecked" Unchecked="CheckBoxAllFiles_OnUnchecked"/>-->
 
         <Button x:Name="ButtonConfirm" Click="ButtonConfirm_OnClick" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
                 MinWidth="50" MinHeight="20" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Confirm" 

@@ -16,7 +16,7 @@ namespace FileNameModifier.ViewModels
     {
         #region Fields
 
-        private string selectedPath     = string.Empty;
+        private string selectedPath = string.Empty;
         private string currentTextToCut = string.Empty;
         private FileInfo currentFile;
 
@@ -43,7 +43,7 @@ namespace FileNameModifier.ViewModels
                 OnPropertyChanged(nameof(CurrentFile));
             }
         }
-         
+
         #endregion Properties
 
         #region Public Methods
@@ -57,15 +57,17 @@ namespace FileNameModifier.ViewModels
 
             try
             {
-                var counter         = 0;
+                var counter = 0;
                 var dialogConfirmed = false;
-                var dialogShown     = false;
-                var fileInfos       = TryGetDirectoryFiles();
+                var dialogShown = false;
+                var allFilesChecked = false;
+                var fileInfos = TryGetDirectoryFiles();
+                DeleteOptionDialog dialog;
 
                 foreach (var info in fileInfos)
                 {
                     var numberOfOccurrences = Regex.Matches(info.FullName, textToCut).Count;
-                    CurrentFile             = info;
+                    CurrentFile = info;
 
                     if (fileInfos.Length == 1 && numberOfOccurrences == 0)
                     {
@@ -75,12 +77,17 @@ namespace FileNameModifier.ViewModels
                     if (numberOfOccurrences > 1)
                     {
                         var occurenceCountList = GetOccurenceCountList(numberOfOccurrences);
-                        dialogConfirmed        = ShowDeletionOptionDialog(occurenceCountList);
-                        dialogShown            = true;
+                        if (!allFilesChecked)
+                        {
+                            dialog = ShowDeletionOptionDialog(occurenceCountList);
+                            allFilesChecked = dialog.IsAllFilesChecked;
+                            dialogConfirmed = dialog.IsConfirmed;
+                        }
+                        dialogShown = true;
                     }
 
                     if (!dialogShown)
-                        FileNameCutter.CutFirstOccurrence(info, textToCut);
+                        FileNameCutter.CutSpecificOccurrence(info, textToCut, 1);
                     counter++;
                 }
 
@@ -123,14 +130,14 @@ namespace FileNameModifier.ViewModels
 
         #region Dialogs
 
-        private bool ShowDeletionOptionDialog(List<int> occurenceCounts)
+        private DeleteOptionDialog ShowDeletionOptionDialog(List<int> occurenceCounts)
         {
             var deletionDialog = new DeleteOptionDialog(occurenceCounts);
 
             deletionDialog.BeforeClosing += DeletionDialog_BeforeClosing;
             deletionDialog.ShowDialog();
 
-            return deletionDialog.IsConfirmed;
+            return deletionDialog;
         }
 
         private void ShowSuccessDialog(int changedCount, int unchangedCount)
@@ -144,20 +151,20 @@ namespace FileNameModifier.ViewModels
 
         private void ShowFailDialog(string errorMessage)
         {
-            MessageBox.Show($"Operation wasn't successful.\n\nError message: {errorMessage}", "Error", 
+            MessageBox.Show($"Operation wasn't successful.\n\nError message: {errorMessage}", "Error",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ShowFileNotFoundDialog()
         {
-            MessageBox.Show($"The path \"{selectedPath}\" could not be found.", "File not found", 
+            MessageBox.Show($"The path \"{selectedPath}\" could not be found.", "File not found",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ShowNoOccurrencesDialog(FileInfo fileInfo, string textToCut)
         {
             MessageBox.Show(
-                $"There were no occurrences of \"{textToCut}\" found in the filename \"{fileInfo.FullName}\".", 
+                $"There were no occurrences of \"{textToCut}\" found in the filename \"{fileInfo.FullName}\".",
                 "No occurrence", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
@@ -169,13 +176,17 @@ namespace FileNameModifier.ViewModels
         {
             if (!e.IsConfirmed)
                 return;
+
             switch (e.SelectedOption)
             {
                 case Logic.Enumerations.DeletionOption.RemoveFirst:
-                    FileNameCutter.CutFirstOccurrence(CurrentFile, currentTextToCut);
+                    FileNameCutter.CutSpecificOccurrence(CurrentFile, currentTextToCut, 1);
                     break;
                 case Logic.Enumerations.DeletionOption.RemoveAll:
                     FileNameCutter.CutAllOccurrences(CurrentFile, currentTextToCut);
+                    break;
+                case Logic.Enumerations.DeletionOption.RemoveSpecific:
+                    FileNameCutter.CutSpecificOccurrence(CurrentFile, currentTextToCut, e.SelectedOccurrence);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

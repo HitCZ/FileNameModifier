@@ -1,6 +1,5 @@
-﻿using System;
-using FileNameModifier.Logic.Enumerations;
-using System.ComponentModel;
+﻿using FileNameModifier.Logic.Enumerations;
+using System;
 
 namespace FileNameModifier.Logic.Arguments
 {
@@ -8,5 +7,7 @@ namespace FileNameModifier.Logic.Arguments
     {
         public bool IsConfirmed { get; set; }
         public DeletionOption SelectedOption { get; set; }
+        public int SelectedOccurrence { get; set; }
+        public bool IsAllFilesChecked { get; set; }
     }
 }

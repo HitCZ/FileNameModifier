@@ -3,6 +3,7 @@
     public enum DeletionOption
     {
         RemoveFirst,
-        RemoveAll
+        RemoveAll,
+        RemoveSpecific
     }
 }

@@ -27,6 +27,7 @@ namespace FileNameModifier.Views
         #region Properties
 
         public bool IsConfirmed { get; set; }
+        public bool IsAllFilesChecked { get; set; }
 
         public DeletionOptionDialogViewModel ViewModel { get; }
 
@@ -52,7 +53,7 @@ namespace FileNameModifier.Views
 
         private void ButtonConfirm_OnClick(object sender, RoutedEventArgs e)
         {
-            IsConfirmed           = true;
+            IsConfirmed = true;
             ViewModel.IsConfirmed = true;
             Close();
         }
@@ -61,11 +62,13 @@ namespace FileNameModifier.Views
         {
             var optionClosingArgs = new OptionClosingArgument()
             {
-                IsConfirmed    = ViewModel.IsConfirmed,
-                SelectedOption = ViewModel.SelectedOption
+                IsConfirmed = ViewModel.IsConfirmed,
+                SelectedOption = ViewModel.SelectedOption,
+                SelectedOccurrence = ViewModel.SelectedOccurrence,
+                IsAllFilesChecked = ViewModel.IsAllFilesChecked
             };
 
-            BeforeClosing?.Invoke(sender,optionClosingArgs);
+            BeforeClosing?.Invoke(sender, optionClosingArgs);
         }
 
         private void RadioButtonRemoveAll_OnChecked(object sender, RoutedEventArgs e)
@@ -76,6 +79,22 @@ namespace FileNameModifier.Views
         private void RadioButtonRemoveFirst_OnChecked(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectedOption = DeletionOption.RemoveFirst;
+        }
+        private void RadioButtonRemoveSpecificOccurrence_OnChecked(object sender, RoutedEventArgs e)
+        {
+            ViewModel.SelectedOption = DeletionOption.RemoveSpecific;
+        }
+
+        private void CheckBoxAllFiles_OnChecked(object sender, RoutedEventArgs e)
+        {
+            IsAllFilesChecked = true;
+            ViewModel.IsAllFilesChecked = true;
+        }
+
+        private void CheckBoxAllFiles_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            IsAllFilesChecked = false;
+            ViewModel.IsAllFilesChecked = false;
         }
 
         #endregion Event Handlers
